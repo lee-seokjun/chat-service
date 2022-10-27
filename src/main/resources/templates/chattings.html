@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<input type="button" id="roomAdder" value="add">
+<ul id="myroomList"></ul>
+
+<div>
+ <ul id="chatting" style="list-style:none">
+
+ </ul>
+    <div id ="buttonDiv"></div>
+</div>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script src="/js/sockjs.min.js"></script>
+<script src="/js/stomp.min.js"></script>
+<script src="/js/app.js"></script>
+<div id="greetings"></div>
+<script>
+    $.ajax({
+        url: 'http://localhost:6060/test/chat',
+        type: 'GET',
+        contentType :'application/x-www-form-urlencoded;',
+        success: function (res) {
+            res.forEach(
+                v =>
+                {
+                    $('#myroomList').append($('<li id="'+v.chatId+'">'  +v.chatId +' </li>').on('click',showMessage))
+                }
+            )
+        },
+        error : function(err){
+            console.log('error');
+
+        }
+    });
+
+    $('#roomAdder').on('click',addRoom);
+    function showMessage(){
+        var id =$(this).attr('id')
+        $.ajax({
+            url: 'http://localhost:6060/test/messages/'+id,
+            type: 'GET',
+            contentType :'application/x-www-form-urlencoded;',
+            success: function (res) {
+                $("#chatting").text('')
+                res.forEach(
+                    v=>
+                    {
+                        var li = v.senderId=='test' ?  $('<li>'+v.message +'</li>').css("text-align","right") : $('<li>'+v.senderId +' <br/></li>').append($('<span>'+v.message +'</span>'))
+                        $("#chatting").append(li);
+                    }
+                )
+                $("#buttonDiv").text('')
+                $("#buttonDiv").append($('<input type="input" id="message">')).append($('<button > 전송</button>').attr('chatId',id).on('click',sendMessage));
+
+            },
+            error : function(err){
+                console.log('error');
+
+            }
+        });
+    }
+    function sendMessage()
+    {
+
+        $.ajax({
+            url: 'http://localhost:6060/test/messages/'+$(this).attr('chatId'),
+            type: 'POST',
+            contentType :'application/json;',
+            Accept :'*/*',
+            data : $('#message').val(),
+            success: function (res) {
+                var li = $('<li>'+$('#message').val() +'</li>').css("text-align","right")
+                $("#chatting").append(li);
+
+            },
+            error : function(err){
+                console.log('error');
+
+            }
+        });
+    }
+    function addRoom()
+    {
+        var json = {
+            "masterMember": "test",
+            "chatMemberIds" :["writer","test"],
+            "title":"title"
+        };
+        $.ajax({
+            url: 'http://localhost:6060/test/chat',
+            type: 'POST',
+            contentType :'application/json;',
+            Accept :'*/*',
+            data : JSON.stringify(json),
+            success: function (res) {
+                console.log(res)
+                $('#myroomList').append($('<li id="'+res.chatId+'">'  +res.chatId +' </li>').on('click',showMessage))
+            },
+            error : function(err){
+                console.log('error');
+
+            }
+        });
+    }
+
+    // var form = $('<form action="POST" target="http://localhost:6060/test/chat"></form>')
+    // form.append($('<input type="hidden" value="test" name ="masterMember">'))
+    // form.append($('<input type="hidden" value="chatMemberIds" name ="chatMemberIds">'))
+    // form.append($('<input type="hidden" value="title" name ="title">'))
+    // form.submit();
+
+
+</script>
+
+</body>
+</html>

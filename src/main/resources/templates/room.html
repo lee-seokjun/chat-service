@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script src="/js/sockjs.min.js"></script>
+<script src="/js/stomp.min.js"></script>
+<script src="/js/app.js"></script>
+<script src="/js/user.js"></script>
+<script type="text/javascript">
+
+</script>
+<div class="container">
+  <h1 align="center">채팅방</h1>
+<!--  <ul class="resultSet">-->
+
+
+<!--  </ul>-->
+<!--  <div id="roomContainer" class="roomContainer">-->
+<!--    <table id="roomList" class="roomList"></table>-->
+<!--  </div>-->
+<!--  <div>-->
+
+<!--    <table class="inputTable">-->
+      <tr><th>아이디</th><td><input type="text" name ="userName" id ="userName" value="tester" readonly></td></tr>
+<!--        <tr id ="roomAdder" style="display: none">-->
+<!--            <th>방 제목</th><td><input type="text" name="roomName" id="roomName" style="color:black"></td> <td><button id="createRoom">방 만들기</button></td>-->
+<!--        </tr>-->
+        <tr> <th>현재방</th><td><input type="text"  name ="chatId" id ="chatId" readonly></td></tr>
+    <input type="hidden"  name ="token" id ="token" readonly>
+<!--    <button id="startChat">시작</button>-->
+
+<!--    </table>-->
+<!--    <ul id="myroomList"></ul>-->
+  </div>
+</div>
+
+<noscript><h2 style="color: #ff0000">Seems your browser doesn't support Javascript! Websocket relies on Javascript being
+  enabled. Please enable
+  Javascript and reload this page!</h2></noscript>
+
+<div id="chatting" class="container" style="display:none">
+  <div class="row">
+    <div class="col-md-6">
+      <form class="form-inline">
+        <div class="form-group">
+<!--          <ul class="resultSet">-->
+<!--            <li class="item" style="width: 20%"><button id="connect" class="btn btn-default" type="submit">채팅방 연결</button> </li>-->
+<!--          </ul>-->
+        </div>
+        <div class="row">
+          <div class="col-md-12">
+            <table id="conversation" class="table table-striped" style="display: none">
+              <thead>
+              <tr>
+                <th colspan="2">채팅방에 입장했습니다.</th>
+              </tr>
+              </thead>
+            </table>
+
+            <ul class="resultSet" style="width: 85%; overflow: auto;height: 200px;background-color: #f1eeee;list-style:none">
+
+              <div id="greetings">
+
+              </div>
+            </ul>
+          </div>
+        </div>
+        <div class="form-group">
+          <input type="text" id="chatMessage"  name="chatMessage" class="form-control" placeholder="message.." />
+        </div>
+        <button id="chatSend" class="btn btn-default" type="button" >보내기</button>
+        <button  class="btn btn-default" type="button" onclick="location.href='/room'">채팅방목록</button>
+        <input type="button" id="disconnect"  value="나가기"/>
+      </form>
+    </div>
+  </div>
+</div>
+
+
+</body>
+</html>
